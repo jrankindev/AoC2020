@@ -1,7 +1,7 @@
 ﻿cls
 
 #grab the raw input and store into a variable
-$rawInputString = Get-Content pie.txt -Raw
+$rawInputString = Get-Content pi.txt -Raw
 
 #split the string into array of lines
 #split the whole text into an array where there are two or more linefeeds via regex
@@ -21,6 +21,7 @@ for ($i = 0; $i -le $arrayListFromFile.Count; $i++) {
     }
 }
 
+#part1
 #loop through each element (group that answered questions)
 $sumQuestions = 0
 foreach ($element in $arrayListFromFile) {
@@ -33,50 +34,28 @@ foreach ($element in $arrayListFromFile) {
     #count how many questions were answered total and track it
     $sumQuestions = $sumQuestions + $elementCharArray.Count
 }
-echo "Sum of all questions answered (part 1): $sumQuestions"
+echo "Sum of all questions answered (part 1): $sumQuestions `n"
 
 #part2
 #loop through each element (group that answered questions)
 $sumQuestions = 0
 foreach ($element in $arrayListFromFile) {
-    #create element array splitting on spaces (blank lines), then loop through them
+    #create element array splitting on spaces (blank lines), then count them.
+    #this will give us the number of people in each group
     [string[]] $elementArray = $element.Split(" ")
-    $elementArray
-    echo ""
-}
-echo "Sum of all questions answered (part 2): $sumQuestions `n"
+    $groupCount = $elementArray.Count
 
-<#
-#create an array of the lowercase alphabet
-[string[]] $alphabetArray = [char]'a'..[char]'z'
-#create an array with the same index number for tracking
-$questionCountArray = New-Object int[] 26
+    #now strip out spaces in element
+    $element = $element.Replace(' ','')
+    #split again into char array, then group
+    $indivQuestionArray = $element.ToString().ToCharArray()
+    $indivQuestionArray = $indivQuestionArray | group
 
-#loop through each element (group that answered questions)
-foreach ($element in $arrayListFromFile) {
-    #create element array splitting on spaces (blank lines), then loop through them
-    [string[]] $elementArray = $element.Split(" ")
-    foreach ($elementSplit in $elementArray) {
-        #split again into a char array and loop through it for each character
-        $indivQuestionArray = $elementSplit.ToCharArray()
-        for ($i = 0; $i -lt $indivQuestionArray.Length; $i++) {
-            #get the current character's int32 value
-            $inputCharToInt = [int][char]$indivQuestionArray[$i]
-            #find the array index that matches the current character's int32 value
-            #have to put it back into a string cause powershell being powershell
-            $indexOfInput = $alphabetArray.IndexOf($inputCharToInt.ToString())
-            #add one for the index found so we can count them up later
-            $questionCountArray[$indexOfInput]++
+    #loop through each question and see if it was answered by the same number as people in the group
+    foreach ($element in $indivQuestionArray) {
+        if ($element.Count -eq $groupCount) {
+            $sumQuestions++
         }
     }
 }
-
-#print out alphabet counted array results
-$counter = 1
-for ($i = 0; $i -lt $alphabetArray.Length; $i++) {
-    #cast back to char because the int value is saved
-    $tempElement = [char][int]$alphabetArray[$i]
-    echo "$counter -> count: $($questionCountArray[$i]), alpha: $tempElement"
-    $counter++
-}
-echo ""#>
+echo "Sum of all questions answered (part 2): $sumQuestions `n"
