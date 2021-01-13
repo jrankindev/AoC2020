@@ -1,8 +1,7 @@
-﻿cls
+﻿Clear-Host
 
 #grab input and put into array
-#[string[]] $arrayFromFile = Get-Content puzzleinput_example.txt
-[string[]] $arrayFromFile = Get-Content puzzleinput.txt
+[string[]] $arrayFromFile = Get-Content pi.txt
 
 #get total height of hill input file (how many lines there are)
 $hillElevation = $arrayFromFile.Length
@@ -10,8 +9,8 @@ $hillElevation = $arrayFromFile.Length
 #get width of one input line (they are all the same width)
 $hillWidth = $arrayFromFile[0].Length
 
-echo "Hill Height: $hillElevation"
-echo "Hill Width: $hillWidth"
+Write-Output "Hill Height: $hillElevation"
+Write-Output "Hill Width: $hillWidth"
 
 #calculate how many times to repeat each element of the array in order to maintain a downhill slope of 1 down 3 right
 $totalWidthNeeded = $hillElevation * 3
@@ -42,4 +41,4 @@ foreach ($element in $arrayFromFile) {
     $startPosition = $startPosition + 3
 }
 
-echo "Total trees hit: $treeCount"
+Write-Output "Total trees hit: $treeCount"

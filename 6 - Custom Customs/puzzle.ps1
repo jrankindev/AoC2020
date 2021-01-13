@@ -1,4 +1,4 @@
-﻿cls
+﻿Clear-Host
 
 #grab the raw input and store into a variable
 $rawInputString = Get-Content pi.txt -Raw
@@ -30,11 +30,11 @@ foreach ($element in $arrayListFromFile) {
     #split each question group into a character array
     $elementCharArray = $element.ToCharArray()
     #find only the unique characters since we only care if the question was answered once
-    $elementCharArray = $elementCharArray | Select -Unique
+    $elementCharArray = $elementCharArray | Select-Object -Unique
     #count how many questions were answered total and track it
     $sumQuestions = $sumQuestions + $elementCharArray.Count
 }
-echo "Sum of all questions answered (part 1): $sumQuestions `n"
+Write-Output "Sum of all questions answered (part 1): $sumQuestions `n"
 
 #part2
 #loop through each element (group that answered questions)
@@ -49,7 +49,7 @@ foreach ($element in $arrayListFromFile) {
     $element = $element.Replace(' ','')
     #split again into char array, then group
     $indivQuestionArray = $element.ToString().ToCharArray()
-    $indivQuestionArray = $indivQuestionArray | group
+    $indivQuestionArray = $indivQuestionArray | Group-Object
 
     #loop through each question and see if it was answered by the same number as people in the group
     foreach ($element in $indivQuestionArray) {
@@ -58,4 +58,4 @@ foreach ($element in $arrayListFromFile) {
         }
     }
 }
-echo "Sum of all questions answered (part 2): $sumQuestions `n"
+Write-Output "Sum of all questions answered (part 2): $sumQuestions `n"

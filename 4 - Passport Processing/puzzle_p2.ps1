@@ -1,7 +1,7 @@
-﻿cls
+﻿Clear-Host
 
 #grab the raw input and store into a variable
-$rawInputString = Get-Content puzzleinput.txt -Raw
+$rawInputString = Get-Content pi.txt -Raw
 
 #split the string into array of lines
 #split the whole text into an array where there are two or more linefeeds via regex
@@ -102,16 +102,16 @@ foreach ($element in $arrayListFromFile) {
 
         if ($splitElementTracker -eq 7) {
             $validPassports++
-            echo "VALID PASSPORT"
+            Write-Output "VALID PASSPORT"
         } else {
-            echo "INVALID PASSPORT"
+            Write-Output "INVALID PASSPORT"
         }
-        echo "Split Element Tracker: $splitElementTracker"
-        echo ""
+        Write-Output "Split Element Tracker: $splitElementTracker"
+        Write-Output ""
     }
 }
 
-echo ""
-echo "Total VALID Passports: $validPassports"
-echo "Total pass first validation: $($passFirstValidationArrayList.Count)"
-echo "Total to start: $($arrayListFromFile.Count)"
+Write-Output ""
+Write-Output "Total VALID Passports: $validPassports"
+Write-Output "Total pass first validation: $($passFirstValidationArrayList.Count)"
+Write-Output "Total to start: $($arrayListFromFile.Count)"

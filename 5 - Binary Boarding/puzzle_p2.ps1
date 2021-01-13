@@ -1,4 +1,4 @@
-﻿cls
+﻿Clear-Host
 
 #get input into array
 [String[]] $arrayFromFile = Get-Content pi.txt
@@ -19,5 +19,13 @@ for ($i = 0; $i -lt $arrayFromFile.Length; $i++) {
 #create new array with int type from old string array
 [int[]] $decArray = $arrayFromFile
 
-#sort out all values from the array and show last one (highest)
-echo "Highest Seat ID: $($decArray | sort | Select-Object -Last 1)"
+#find min and max array values
+$minValue = $decArray | Sort-Object | Select-Object -First 1
+$maxValue = $decArray | Sort-Object | Select-Object -Last 1
+
+#create new array using the range of values in the previous array
+[int[]] $decArrayCompare = $minValue..$maxValue
+
+#find the missing number in decArray by comparing it to the created array using the range
+$mySeat = $decArrayCompare | Where-Object {-not ($decArray -contains $_)}
+Write-Output "My seat ID is: $mySeat"

@@ -1,8 +1,8 @@
 ﻿#clear screen
-cls
+Clear-Host
 
 #grab input and put into arraylist
-[System.Collections.ArrayList] $arrayFromFile = Get-Content pie.txt
+[System.Collections.ArrayList] $arrayFromFile = Get-Content "./pie.txt"
 
 #sanitize input
 #get rid of shiny gold bag entry (not bags that can contain shiny gold bags)
@@ -11,22 +11,22 @@ cls
 for ($i = 0; $i -lt $arrayFromFile.Count; $i++) { 
     if ($arrayFromFile[$i].Contains("no")) {
         $arrayFromFile[$i]
-        echo "TRUE"
+        Write-Output "TRUE"
         $arrayFromFile.Remove($arrayFromFile[$i])
     }
 }
 
 #search array
-$searchArray = @("shiny gold")
+#$searchArray = @("shiny gold")
 
 #replace no with 0
 for ($i = 0; $i -lt $arrayFromFile.Count; $i++) { 
     #$arrayFromFile[$i] = $arrayFromFile[$i].Replace("no","0")
 
     <#if ($arrayFromFile[$i] -match $searchArray) {
-        echo "TRUE -> $($arrayFromFile[$i])"
+        Write-Output "TRUE -> $($arrayFromFile[$i])"
     } else {
-        echo "FALSE -> $($arrayFromFile[$i])"
+        Write-Output "FALSE -> $($arrayFromFile[$i])"
     }#>
     
 }
@@ -34,7 +34,7 @@ for ($i = 0; $i -lt $arrayFromFile.Count; $i++) {
 $arrayFromFile
 
 #$arrayFromFile -match $searchArray
-#echo ""
+#Write-Output ""
 #$arrayFromFile -notmatch $searchArray
 
 #foreach ($element

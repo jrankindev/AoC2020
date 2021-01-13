@@ -1,8 +1,8 @@
-﻿#some alternative code methods to solve other problems while i was exploring this puzzle
+﻿#some alternative code methods to solve other problems while i was exploring a puzzle
 #the below code does not work as is, just saving it off for the future if i want to look at it for ideas
 
 #create an array of the lowercase alphabet
-[string[]] $alphathbetArray = [char]'a'..[char]'z'
+#[string[]] $alphathbetArray = [char]'a'..[char]'z'
 #create an array with the same index number for tracking
 $questionCountArray = New-Object int[] 26
 
@@ -30,6 +30,6 @@ $counter = 1
 for ($i = 0; $i -lt $alphabetArray.Length; $i++) {
     #cast back to char because the int value is saved
     $tempElement = [char][int]$alphabetArray[$i]
-    echo "$counter -> count: $($questionCountArray[$i]), alpha: $tempElement"
+    Write-Output "$counter -> count: $($questionCountArray[$i]), alpha: $tempElement"
     $counter++
 }

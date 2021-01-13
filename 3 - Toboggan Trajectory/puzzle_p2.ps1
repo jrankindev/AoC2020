@@ -1,7 +1,7 @@
-﻿cls
+﻿Clear-Host
 
 #grab input and put into array
-[string[]] $arrayFromFile = Get-Content puzzleinput.txt
+[string[]] $arrayFromFile = Get-Content pi.txt
 
 #get total height of hill input file (how many lines there are)
 $hillElevation = $arrayFromFile.Length
@@ -25,7 +25,7 @@ for ($x=0; $x -le $arrayFromFile.Length - 1; $x++) {
     }
 }
 
-function Hit-Trees {
+function Find-Trees {
     param([int]$right, [int]$down)
 
     $startPosition = 0
@@ -40,13 +40,13 @@ function Hit-Trees {
 
         $startPosition = $startPosition + $right
     }
-    echo "Right $right, Down $down"
-    echo "Total trees hit: $treeCount"
-    echo ""
+    Write-Output "Right $right, Down $down"
+    Write-Output "Total trees hit: $treeCount"
+    Write-Output ""
 }
 
-Hit-Trees -right 1 -down 1
-Hit-Trees -right 3 -down 1
-Hit-Trees -right 5 -down 1
-Hit-Trees -right 7 -down 1
-Hit-Trees -right 1 -down 2
+Find-Trees -right 1 -down 1
+Find-Trees -right 3 -down 1
+Find-Trees -right 5 -down 1
+Find-Trees -right 7 -down 1
+Find-Trees -right 1 -down 2
