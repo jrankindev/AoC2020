@@ -2,39 +2,44 @@
 Clear-Host
 
 #grab input and put into arraylist
-[System.Collections.ArrayList] $arrayFromFile = Get-Content "./pie.txt"
+[System.Collections.ArrayList] $arrayFromFile = Get-Content pie.txt
 
-#sanitize input
-#get rid of shiny gold bag entry (not bags that can contain shiny gold bags)
-#get rid of bags that can contain no other bags
 
+<# sanitize input
+get rid of shiny gold bag entry (not bags that can contain shiny gold bags)
+get rid of bags that can contain no other bags
+reformat each element for processing #>
+
+#array to store sanitized input
+[string[]] $sanitizedArrayFromFile = @()
+
+#loop through array and filter bags that contain no other bags and the shiny gold entry then add to sanitized array
 for ($i = 0; $i -lt $arrayFromFile.Count; $i++) { 
-    if ($arrayFromFile[$i].Contains("no")) {
-        $arrayFromFile[$i]
-        Write-Output "TRUE"
-        $arrayFromFile.Remove($arrayFromFile[$i])
+    if (-not ($arrayFromFile[$i].Contains("no")) -and -not ($arrayFromFile[$i].ToString().StartsWith("shiny gold"))) {
+        $sanitizedArrayFromFile += $arrayFromFile[$i]
     }
 }
 
-#search array
-#$searchArray = @("shiny gold")
-
-#replace no with 0
-for ($i = 0; $i -lt $arrayFromFile.Count; $i++) { 
-    #$arrayFromFile[$i] = $arrayFromFile[$i].Replace("no","0")
-
-    <#if ($arrayFromFile[$i] -match $searchArray) {
-        Write-Output "TRUE -> $($arrayFromFile[$i])"
-    } else {
-        Write-Output "FALSE -> $($arrayFromFile[$i])"
-    }#>
-    
+#loop through sanitized array and format each element
+for ($i = 0; $i -lt $sanitizedArrayFromFile.Count; $i++) {
+    $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bags contain ",":")
+    $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bag, ",":")
+    $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bags, ",":")
+    $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bags.","")
+    $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bag.","")
 }
 
-$arrayFromFile
+$sanitizedArrayFromFile
+Write-Output ""
+Write-Output "Total input: $($arrayFromFile.Count)"
+Write-Output "Total sanitized input: $($sanitizedArrayFromFile.Count)"
+Write-Output "Filtered: $($arrayFromFile.Count - $sanitizedArrayFromFile.Count) `n"
 
-#$arrayFromFile -match $searchArray
-#Write-Output ""
-#$arrayFromFile -notmatch $searchArray
+#search array to store entries we care about, preload with shiny gold
+$searchArray = @("shiny gold")
 
-#foreach ($element
+foreach ($element in $sanitizedArrayFromFile) {
+    if ($element -match $searchArray) {
+        Write-Output "MATCH -> $element"
+    }
+}
