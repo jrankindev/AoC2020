@@ -40,7 +40,7 @@ $searchArray = @('shiny gold')
 #track if new bag was found
 $newBagFound = 0
 
-$loopcounter = 1
+$loopCounter = 1
 #loop through and add bags to searchArray until no new bags are found
 do {
     $newBagFound = 0
@@ -60,7 +60,7 @@ do {
         }
     }
     Write-Host "searchArray Count: $($searchArray.Count) Loops: $loopcounter"
-    $loopcounter++
+    $loopCounter++
 } while ($newBagFound -gt 0)
 
 #minus 1 since it contains the initial search of shiny gold
