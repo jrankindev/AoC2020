@@ -2,7 +2,7 @@
 Clear-Host
 
 #grab input and put into arraylist
-[System.Collections.ArrayList] $arrayFromFile = Get-Content pie.txt
+[System.Collections.ArrayList] $arrayFromFile = Get-Content pi.txt
 
 <# sanitize input
 get rid of shiny gold bag entry (not bags that can contain shiny gold bags)
@@ -26,59 +26,43 @@ for ($i = 0; $i -lt $sanitizedArrayFromFile.Count; $i++) {
     $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bags, ",":")
     $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bags.","")
     $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i].Replace(" bag.","")
+    $sanitizedArrayFromFile[$i] = $sanitizedArrayFromFile[$i] -replace '\d\s',''
 }
 
-$sanitizedArrayFromFile
-Write-Output ""
+Write-Host " Part 1 "  -BackgroundColor "Green" -ForegroundColor "Black"
 Write-Output "Total input: $($arrayFromFile.Count)"
 Write-Output "Total sanitized input: $($sanitizedArrayFromFile.Count)"
-Write-Output "Filtered: $($arrayFromFile.Count - $sanitizedArrayFromFile.Count) `n"
+Write-Output "Filtered: $($arrayFromFile.Count - $sanitizedArrayFromFile.Count)"
 
 #search array to store entries we care about, preload with shiny gold
-$searchArray = @("shiny gold")
+$searchArray = @('shiny gold')
 
-$newBagFound = $true
+#track if new bag was found
+$newBagFound = 0
 
-Write-Output "Matching:"
-$searchArray
-echo ""
-foreach ($element in $sanitizedArrayFromFile) {
-    if ($element -match $searchArray) {
-        Write-Output "TRUE  -> $element"
-    } else {
-        Write-Output "FALSE -> $element"
-    }
-}
-
-echo ""
-
-for ($i = 0; $i -lt $sanitizedArrayFromFile.Count; $i++) {
-    [string[]] $elementArray = $sanitizedArrayFromFile[$i].Split(":")
-    $elementArray
-
-    if ($sanitizedArrayFromFile[$i] -match $searchArray[0]) {
-        Write-Output "TRUE  -> $($sanitizedArrayFromFile[$i])"
-    } else {
-        Write-Output "FALSE -> $($sanitizedArrayFromFile[$i])"
-    }
-    echo ""
-}
-
-echo ""
-echo ""
-($sanitizedArrayFromFile | %{$searchArray -like $_}) -contains $true
-
-<#foreach ($element in $sanitizedArrayFromFile) {
-    [string[]] $elementArray = $element.Split(":")
-    for ($i = 1; $i -lt $elementArray.Count; $i++) {
-        if ($elementArray[$i] -match $searchArray) {
-            $elementArray[$i].Remove(0,2)
-            $elementArray[0]
-            $searchArray += $elementArray[0]
+$loopcounter = 1
+#loop through and add bags to searchArray until no new bags are found
+do {
+    $newBagFound = 0
+    #loop through each line
+    for ($i = 0; $i -lt $sanitizedArrayFromFile.Count; $i++) {
+        #split into individual bags
+        [string[]] $elementArray = $sanitizedArrayFromFile[$i].Split(":")
+        #loop through each bag
+        for ($x = 0; $x -lt $elementArray.Count; $x++) {
+            $searchArray | ForEach-Object {
+                #true if not first element and matches element in searcharray and first element is not already in searcharray
+                if ($x -gt 0 -and $elementArray[$x] -match $_ -and (-not ($searchArray.Contains($elementArray[0])))) {
+                    $searchArray += $elementArray[0]
+                    $newBagFound++
+                }
+            }
         }
-        #$elementArray[$i].Remove(0,2)
     }
-    echo ""
-}
+    Write-Host "searchArray Count: $($searchArray.Count) Loops: $loopcounter"
+    $loopcounter++
+} while ($newBagFound -gt 0)
 
-$searchArray#>
+#minus 1 since it contains the initial search of shiny gold
+$totalBags = $searchArray.Count - 1
+Write-Host " Total Bags (P1 Answer): $totalBags `n" -BackgroundColor "Green" -ForegroundColor "Black"
