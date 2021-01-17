@@ -40,8 +40,8 @@ $searchArray = @('shiny gold')
 #track if new bag was found
 $newBagFound = 0
 
-$loopCounter = 1
 #loop through and add bags to searchArray until no new bags are found
+$loopCounter = 1
 do {
     $newBagFound = 0
     #loop through each line
@@ -65,4 +65,4 @@ do {
 
 #minus 1 since it contains the initial search of shiny gold
 $totalBags = $searchArray.Count - 1
-Write-Host " Total Bags (P1 Answer): $totalBags `n" -BackgroundColor "Green" -ForegroundColor "Black"
+Write-Host " How many bag colors can eventually contain at least one shiny gold bag? (P1 Answer): $totalBags `n" -BackgroundColor "Green" -ForegroundColor "Black"
