@@ -2,7 +2,7 @@
 Clear-Host
 
 #grab input and put into arraylist
-[System.Collections.ArrayList] $arrayFromFile = Get-Content pi.txt
+[System.Collections.ArrayList] $arrayFromFile = Get-Content pie.txt
 
 <# sanitize input
 get rid of shiny gold bag entry (not bags that can contain shiny gold bags)
@@ -42,6 +42,7 @@ $newBagFound = 0
 
 #loop through and add bags to searchArray until no new bags are found
 $loopCounter = 1
+
 do {
     $newBagFound = 0
     #loop through each line
@@ -66,3 +67,39 @@ do {
 #minus 1 since it contains the initial search of shiny gold
 $totalBags = $searchArray.Count - 1
 Write-Host " How many bag colors can eventually contain at least one shiny gold bag? (P1 Answer): $totalBags `n" -BackgroundColor "Green" -ForegroundColor "Black"
+
+#start part 2
+Write-Host " Part 2 - NOT DONE "  -BackgroundColor "DarkYellow" -ForegroundColor "Black"
+Write-Output "Total input: $($arrayFromFile.Count)"
+
+#array to store sanitized input
+[string[]] $sanitizedArrayFromFileP2 = $arrayFromFile
+
+#loop through sanitized array and format each element
+for ($i = 0; $i -lt $sanitizedArrayFromFileP2.Count; $i++) {
+    $sanitizedArrayFromFileP2[$i] = $sanitizedArrayFromFileP2[$i].Replace(" bags contain ",":")
+    $sanitizedArrayFromFileP2[$i] = $sanitizedArrayFromFileP2[$i].Replace(" bag, ",":")
+    $sanitizedArrayFromFileP2[$i] = $sanitizedArrayFromFileP2[$i].Replace(" bags, ",":")
+    $sanitizedArrayFromFileP2[$i] = $sanitizedArrayFromFileP2[$i].Replace(" bags.","")
+    $sanitizedArrayFromFileP2[$i] = $sanitizedArrayFromFileP2[$i].Replace(" bag.","")
+    $sanitizedArrayFromFileP2[$i] = $sanitizedArrayFromFileP2[$i].Replace("no other","none")
+}
+
+#bag counter
+$bagsInShinyGoldBag = 0
+
+#find how many bags are inside a shiny gold bag
+foreach ($element in $sanitizedArrayFromFileP2) {
+    if ($element.ToString().StartsWith("shiny gold")) {
+        $element
+        [string[]] $shinyGoldArray = $element.Split(":")
+        for ($i = 1; $i -lt $shinyGoldArray.Count; $i++) {
+            $bagsInShinyGoldBag = $bagsInShinyGoldBag + $shinyGoldArray[$i].Substring(0,1)
+        }
+    }
+}
+$bagsInShinyGoldBag
+
+#show answer
+#Write-Host ""
+Write-Host " How many individual bags are required inside your single shiny gold bag? (P2 Answer): $bagsInShinyGoldBag `n"  -BackgroundColor "DarkYellow" -ForegroundColor "Black"
